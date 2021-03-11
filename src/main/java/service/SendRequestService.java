@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import model.ResultStatus;
 import model.Ticket;
 import util.Utils;
@@ -32,6 +33,7 @@ public class SendRequestService {
         ResultStatus resultStatus = sendRequest("/Security/login",body);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ticket = mapper.convertValue(resultStatus.getObjects(), Ticket.class);
     }
 

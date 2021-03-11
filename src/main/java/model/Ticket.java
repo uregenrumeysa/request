@@ -9,6 +9,4 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Ticket {
       private String TicketId;
-      private String DeviceId;
-      private User user;
 }
