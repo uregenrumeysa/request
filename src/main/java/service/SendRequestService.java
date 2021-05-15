@@ -7,6 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import model.ResultStatus;
 import model.Ticket;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import util.Utils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,15 +24,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@Configuration
+@PropertySource("classpath:request.properties")
 public class SendRequestService {
 
     private String centralServerUrl = "http://entegrationsais.csb.gov.tr/SAIS";
     public static Ticket ticket;
 
+    @Value( "${simUserName}" )
+    private String simUserName;
+
+    @Value( "${simPassword}" )
+    private String simPassword;
+
+
     public void login() throws URISyntaxException, JsonProcessingException, NoSuchAlgorithmException {
         HashMap<String,String> body = new HashMap<>();
-        body.put("username", "referansYazilim");
-        body.put("password", Utils.encriyptMD5(Utils.encriyptMD5("referans123")));
+        body.put("username", simUserName);
+        body.put("password", Utils.encriyptMD5(Utils.encriyptMD5(simPassword)));
         ResultStatus resultStatus = sendRequest("/Security/login",body);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
